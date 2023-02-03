@@ -1,7 +1,7 @@
 package nl.hu.inno.thuusbezorgd.delivery.core.application;
 
 import nl.hu.inno.thuusbezorgd.delivery.core.application.command.AddOrderToDelivery;
-import nl.hu.inno.thuusbezorgd.delivery.core.application.command.ChangeStatusDelivery;
+import nl.hu.inno.thuusbezorgd.delivery.core.application.command.FinishDelivery;
 import nl.hu.inno.thuusbezorgd.delivery.core.application.command.NewDelivery;
 import nl.hu.inno.thuusbezorgd.delivery.core.application.command.NewRider;
 import nl.hu.inno.thuusbezorgd.delivery.core.domain.Delivery;
@@ -38,8 +38,11 @@ public class DeliveryCommandHandler {
 
             rider.addDelivery(delivery);
             riderRepository.save(rider);
-            publishEventsAndSave(delivery);
-            return this.deliveryRepository.save(delivery);
+
+            Delivery savedDelivery = this.deliveryRepository.save(delivery);
+            savedDelivery.orderReceived();
+            publishEventsAndSave(savedDelivery);
+            return savedDelivery;
         } else {
             throw new RiderNotFoundException("No riders available");
         }
@@ -59,11 +62,11 @@ public class DeliveryCommandHandler {
         return this.deliveryRepository.save(delivery);
     }
 
-    public Delivery handle(ChangeStatusDelivery command) {
+    public Delivery handle(FinishDelivery command) {
         Delivery delivery = deliveryRepository.findById(command.getId())
                 .orElseThrow(() -> new DeliveryNotFoundException("Delivery not found"));
 
-        delivery.setStatus(command.isCompleted());
+        delivery.markCompleted();
         publishEventsAndSave(delivery);
         return this.deliveryRepository.save(delivery);
     }

@@ -55,14 +55,25 @@ public class OrderCommandHandler {
         return orderRepository.save(order);
     }
 
-    public Order handle(ChangeOrderStatus command) {
+    public Order handle(ReceivedOrder command) {
         Order order = orderRepository.findById(command.getId())
                 .orElseThrow(() -> new UserNotFoundException("Order not found"));
 
-        order.setStatus(command.getStatus().next());
+        order.setStatus(OrderStatus.Received);
         publishEventsAndSave(order);
         return this.orderRepository.save(order);
     }
+
+    public Order handle(FinishOrder command) {
+        Order order = orderRepository.findById(command.getId())
+                .orElseThrow(() -> new UserNotFoundException("Order not found"));
+
+        order.setStatus(OrderStatus.Delivered);
+        publishEventsAndSave(order);
+        return this.orderRepository.save(order);
+    }
+
+
 
     public Order handle(AddOrderedDishToOrder command) {
         Order order = orderRepository.findById(command.getOrderId())

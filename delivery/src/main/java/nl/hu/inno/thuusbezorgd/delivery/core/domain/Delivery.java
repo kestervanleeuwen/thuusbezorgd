@@ -3,6 +3,7 @@ package nl.hu.inno.thuusbezorgd.delivery.core.domain;
 
 import nl.hu.inno.thuusbezorgd.delivery.core.application.command.NewDelivery;
 import nl.hu.inno.thuusbezorgd.delivery.core.domain.event.DeliveryEvent;
+import nl.hu.inno.thuusbezorgd.delivery.core.domain.event.OrderCompleted;
 import nl.hu.inno.thuusbezorgd.delivery.core.domain.event.OrderReceived;
 
 import javax.persistence.*;
@@ -40,7 +41,6 @@ public class Delivery {
 
     public void setOrder(Long order) {
         this.order = order;
-        this.events.add(new OrderReceived(this.order, id));
     }
 
     public boolean isCompleted() {
@@ -49,6 +49,7 @@ public class Delivery {
 
     public void markCompleted(){
         this.completed = true;
+        events.add(new OrderCompleted(this.order));
     }
 
     public List<DeliveryEvent> listEvents() {
@@ -57,5 +58,9 @@ public class Delivery {
 
     public void clearEvents() {
         events.clear();
+    }
+
+    public void orderReceived(){
+        events.add(new OrderReceived(this.order));
     }
 }

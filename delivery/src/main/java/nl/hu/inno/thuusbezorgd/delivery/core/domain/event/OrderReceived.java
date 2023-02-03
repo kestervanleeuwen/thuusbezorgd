@@ -2,19 +2,13 @@ package nl.hu.inno.thuusbezorgd.delivery.core.domain.event;
 
 public class OrderReceived extends DeliveryEvent {
     private final Long orderId;
-    private final Long deliveryId;
 
-    public OrderReceived(Long orderId, Long deliveryId) {
+    public OrderReceived(Long orderId) {
         this.orderId = orderId;
-        this.deliveryId = deliveryId;
     }
 
     public Long getOrderId() {
         return orderId;
-    }
-
-    public Long getDeliveryId() {
-        return deliveryId;
     }
 
     @Override

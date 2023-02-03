@@ -1,4 +1,4 @@
-package nl.hu.inno.thuusbezorgd.orders;
+package nl.hu.inno.thuusbezorgd.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

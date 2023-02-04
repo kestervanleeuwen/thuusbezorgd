@@ -25,7 +25,7 @@ public class HttpDishRepository implements DishRepository {
             dishIds.add(dishId);
         });
 
-        URI uri = URI.create(this.rootPath + "/processDishes");
+        URI uri = URI.create(this.rootPath + "/stock/prepare");
         this.client.postForObject(uri, dishIds, Void.class);
     }
 }

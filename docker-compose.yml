@@ -1,5 +1,5 @@
 version: "3.9"
-services:  
+services:
   rabbitmq:
     restart: always
     image: rabbitmq:3-management
@@ -7,31 +7,28 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_NODENAME: bep3-rabbitmq-node
-  mongodb:    
-    image: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8092:8081
-    environment:      
-      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      RABBITMQ_NODENAME: thuusbezorgd-rabbitmq-node
+    volumes:
+      - ./development/rabbitmq/data/:/var/lib/rabbitmq/
   pg:
     image: postgres
     restart: always
-    ports: 
-      - 5432:5432
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./db/pg/init:/docker-entrypoint-initdb.d/
+      - ./raw:/raw
+      - ./db/pg/data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: 1q2w3e!
   pgadmin:
     image: dpage/pgadmin4
     restart: always
     ports:
-      - 8091:80
+      - "127.0.0.1:9091:80"
+    volumes:
+      - ./db/pg:/db
     environment:
       PGADMIN_DEFAULT_EMAIL: student@hu.nl
       PGADMIN_DEFAULT_PASSWORD: 1q2w3e!
+      PGADMIN_SERVER_JSON_FILE: /db/server.json

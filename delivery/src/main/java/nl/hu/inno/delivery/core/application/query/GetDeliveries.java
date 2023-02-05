@@ -6,7 +6,7 @@ public class GetDeliveries {
 
     public GetDeliveries(String orderBy, String direction) {
         if (orderBy == null) {
-            orderBy = "name";
+            orderBy = "completed";
         }
 
         if (direction == null) {

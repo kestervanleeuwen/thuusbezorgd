@@ -2,6 +2,8 @@ package nl.hu.inno.order.infrastructure.driven.messaging;
 
 import nl.hu.inno.order.core.domain.event.OrderEvent;
 import nl.hu.inno.order.core.ports.messaging.OrderEventPublisher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class RabbitMqEventPublisher implements OrderEventPublisher {

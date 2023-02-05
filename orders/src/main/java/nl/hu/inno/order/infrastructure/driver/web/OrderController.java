@@ -2,6 +2,7 @@ package nl.hu.inno.order.infrastructure.driver.web;
 
 import nl.hu.inno.order.core.application.OrderCommandHandler;
 import nl.hu.inno.order.core.application.OrderQueryHandler;
+import nl.hu.inno.order.core.application.command.CheckForOrderStatus;
 import nl.hu.inno.order.core.application.command.NewOrder;
 import nl.hu.inno.order.core.application.query.GetOrderById;
 import nl.hu.inno.order.core.application.query.GetOrderByUser;
@@ -48,5 +49,10 @@ public class OrderController {
         );
     }
 
-
+    @PostMapping("/check/{id}")
+    public Order checkOrderStatus(@PathVariable Long id) {
+        return this.commandHandler.handle(
+                new CheckForOrderStatus(id)
+        );
+    }
 }

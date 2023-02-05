@@ -14,7 +14,6 @@ public class Delivery {
     @Id
     @GeneratedValue
     private Long id;
-
     @Column
     private boolean completed;
 
@@ -49,7 +48,7 @@ public class Delivery {
 
     public void markCompleted(){
         this.completed = true;
-        events.add(new OrderCompleted(this.order));
+        events.add(new OrderCompleted(this.order, this.id));
     }
 
     public List<DeliveryEvent> listEvents() {
@@ -61,6 +60,7 @@ public class Delivery {
     }
 
     public void orderReceived(){
-        events.add(new OrderReceived(this.order));
+        System.out.println(this.id);
+        events.add(new OrderReceived(this.order, this.id));
     }
 }

@@ -30,14 +30,11 @@ public class DeliveryCommandHandler {
 
     public Delivery handle(NewDelivery command) {
 
-        Rider rider = riderRepository.findRiderWithLeastDeliveries();
+        Rider rider = riderRepository.findOneRandomRider();
 
         if (rider != null) {
             Delivery delivery = new Delivery(rider);
             delivery.setOrder(command.getOrder());
-
-            rider.addDelivery(delivery);
-            riderRepository.save(rider);
 
             Delivery savedDelivery = this.deliveryRepository.save(delivery);
             savedDelivery.orderReceived();

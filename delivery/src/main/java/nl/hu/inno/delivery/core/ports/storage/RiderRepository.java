@@ -9,6 +9,6 @@ import java.util.List;
 public interface RiderRepository extends JpaRepository<Rider, Long> {
     List<Rider> findAllByName(String name);
 
-    @Query("SELECT r FROM Rider r JOIN r.deliveries del ORDER BY COUNT(del) ASC")
-    Rider findRiderWithLeastDeliveries();
+    @Query(value = "SELECT * FROM Rider r ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
+    Rider findOneRandomRider();
 }

@@ -8,6 +8,9 @@ import nl.hu.inno.order.core.ports.messaging.OrderEventPublisher;
 import nl.hu.inno.order.core.ports.storage.DishRepository;
 import nl.hu.inno.order.core.ports.storage.OrderRepository;
 import nl.hu.inno.order.core.ports.storage.UserRepository;
+import nl.hu.inno.order.infrastructure.driven.messaging.RabbitMqEventPublisher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +21,6 @@ public class OrderCommandHandler {
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
     private final OrderEventPublisher eventPublisher;
-
     public OrderCommandHandler(OrderRepository orderRepository, UserRepository userRepository, DishRepository dishRepository, OrderEventPublisher eventPublisher) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
@@ -56,10 +58,11 @@ public class OrderCommandHandler {
     }
 
     public Order handle(ReceivedOrder command) {
-        Order order = orderRepository.findById(command.getId())
+        Order order = orderRepository.findById(command.getOrderId())
                 .orElseThrow(() -> new UserNotFoundException("Order not found"));
 
         order.setStatus(OrderStatus.Received);
+        order.setDelivery(command.getDeliveryId());
         publishEventsAndSave(order);
         return this.orderRepository.save(order);
     }
@@ -72,8 +75,6 @@ public class OrderCommandHandler {
         publishEventsAndSave(order);
         return this.orderRepository.save(order);
     }
-
-
 
     public Order handle(AddOrderedDishToOrder command) {
         Order order = orderRepository.findById(command.getOrderId())

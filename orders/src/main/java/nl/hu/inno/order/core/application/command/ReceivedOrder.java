@@ -1,14 +1,21 @@
 package nl.hu.inno.order.core.application.command;
 
 public class ReceivedOrder {
-    private long id;
+    private Long orderId;
+    private Long deliveryId;
 
-    public ReceivedOrder(long id) {
-        this.id = id;
+
+    public ReceivedOrder(Long orderId, Long deliveryId) {
+        this.orderId = orderId;
+        this.deliveryId = deliveryId;
 
     }
 
-    public long getId() {
-        return id;
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public Long getDeliveryId() {
+        return deliveryId;
     }
 }

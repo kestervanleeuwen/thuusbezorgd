@@ -2,10 +2,12 @@ package nl.hu.inno.delivery.infrastructure.driver.web;
 
 import nl.hu.inno.delivery.core.application.DeliveryCommandHandler;
 import nl.hu.inno.delivery.core.application.DeliveryQueryHandler;
+import nl.hu.inno.delivery.core.application.command.NewRider;
 import nl.hu.inno.delivery.core.application.query.GetRiderById;
 import nl.hu.inno.delivery.core.application.query.GetRiders;
 import nl.hu.inno.delivery.core.application.query.GetRidersByName;
 import nl.hu.inno.delivery.core.domain.Rider;
+import nl.hu.inno.delivery.infrastructure.driver.web.request.NewRiderRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +39,11 @@ public class RiderController {
     @GetMapping("/{name}")
     public List<Rider> getRiderByName(@PathVariable String name) {
         return this.queryHandler.handle(new GetRidersByName(name));
+    }
+
+    @PostMapping
+    public void newRider(@RequestBody NewRiderRequest request) {
+        this.commandHandler.handle(new NewRider(request.name));
     }
 
 }

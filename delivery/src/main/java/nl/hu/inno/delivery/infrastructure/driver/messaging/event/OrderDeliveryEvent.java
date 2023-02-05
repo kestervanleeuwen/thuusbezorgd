@@ -1,10 +1,11 @@
 package nl.hu.inno.delivery.infrastructure.driver.messaging.event;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class OrderDeliveryEvent {
-    public Long eventId;
+    public UUID eventId;
     public String eventKey;
     public Instant eventDate;
-    public Long orderId;
+    public String orderId;
 }

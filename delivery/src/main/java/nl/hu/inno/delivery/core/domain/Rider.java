@@ -1,9 +1,6 @@
 package nl.hu.inno.delivery.core.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class Rider {
 
     }
 
-    @OneToMany(mappedBy = "rider")
+    @OneToMany(mappedBy = "rider", fetch = FetchType.LAZY)
     private List<Delivery> deliveries = new ArrayList<>();
 
     public void addDelivery(Delivery delivery) {

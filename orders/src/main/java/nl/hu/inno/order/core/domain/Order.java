@@ -105,12 +105,16 @@ public class Order {
     public void readyForDelivery() {
         if (this.status == OrderStatus.ReadyForDelivery) {
             this.events.add(new NewOrderEvent(id));
+            System.out.println(events);
         } else {
             // 80% chance your order goes to the next status when you check it... poor customers
             Random rand = new Random();
-            boolean val = rand.nextInt(100) < 80;
+            boolean val = rand.nextInt(100) < 85;
 
-            this.status.next();
+            System.out.println("Random value: " + val);
+            if (val) {
+                this.status = status.next();
+            }
         }
     }
 

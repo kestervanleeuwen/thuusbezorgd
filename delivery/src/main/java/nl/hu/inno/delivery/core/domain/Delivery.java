@@ -59,8 +59,11 @@ public class Delivery {
         events.clear();
     }
 
-    public void orderReceived(){
-        System.out.println(this.id);
-        events.add(new OrderReceived(this.order, this.id));
+    public void orderReceived(Long id){
+        events.add(new OrderReceived(this.order, id));
+    }
+
+    public Long getId() {
+        return id;
     }
 }

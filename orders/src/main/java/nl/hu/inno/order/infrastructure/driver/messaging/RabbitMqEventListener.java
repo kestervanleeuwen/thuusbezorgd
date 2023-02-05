@@ -26,8 +26,6 @@ public class RabbitMqEventListener {
     void listen(DeliveryOrderEvent event, Message message, Channel channel) throws IOException {
         switch (event.eventKey) {
             case "delivery.order.received":
-                System.out.println(event.orderId);
-                System.out.println(event.deliveryId);
                 this.commandHandler.handle(
                         new ReceivedOrder(Long.parseLong(event.orderId), Long.parseLong(event.deliveryId))
                 );

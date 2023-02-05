@@ -37,7 +37,7 @@ public class DeliveryCommandHandler {
             delivery.setOrder(command.getOrder());
 
             Delivery savedDelivery = this.deliveryRepository.save(delivery);
-            savedDelivery.orderReceived();
+            savedDelivery.orderReceived(savedDelivery.getId());
             publishEventsAndSave(savedDelivery);
             return savedDelivery;
         } else {

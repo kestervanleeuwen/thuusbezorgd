@@ -17,7 +17,6 @@ public class OrderCompleted extends DeliveryEvent {
         return deliveryId;
     }
 
-
     @Override
     public String getEventKey() {
         return "delivery.order.completed";

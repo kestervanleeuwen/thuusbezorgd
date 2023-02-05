@@ -7,14 +7,14 @@ import java.util.List;
 
 // nee niet de band
 public class NewOrder {
-    private final Long userId;
+    private final String userId;
     private final List<Long> dishes;
     private final String city;
     private final String street;
     private final String houseNr;
     private final String zipcode;
 
-    public NewOrder(Long userId, List<Long> dishes, String city, String street, String houseNr, String zipcode) {
+    public NewOrder(String userId, List<Long> dishes, String city, String street, String houseNr, String zipcode) {
         this.userId = userId;
         this.dishes = dishes;
         this.city = city;
@@ -23,7 +23,7 @@ public class NewOrder {
         this.zipcode = zipcode;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

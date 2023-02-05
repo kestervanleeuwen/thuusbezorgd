@@ -2,11 +2,14 @@ package nl.hu.inno.stock.infrastructure.driver.web;
 
 import nl.hu.inno.stock.core.application.DishCommandHandler;
 import nl.hu.inno.stock.core.application.DishQueryHandler;
+import nl.hu.inno.stock.core.application.command.NewDish;
 import nl.hu.inno.stock.core.application.command.PrepareDishes;
 import nl.hu.inno.stock.core.application.query.GetDishById;
 import nl.hu.inno.stock.core.application.query.GetDishByName;
 import nl.hu.inno.stock.core.application.query.GetDishes;
 import nl.hu.inno.stock.core.domain.Dish;
+import nl.hu.inno.stock.infrastructure.driver.web.request.NewDishRequest;
+import nl.hu.inno.stock.infrastructure.driver.web.request.PrepareRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +44,14 @@ public class DishController {
     }
 
     @PostMapping("/prepare")
-    public void prepareDishes(@RequestBody List<Long> dishIds) {
-        this.commandHandler.handle(new PrepareDishes(dishIds));
+    public void prepareDishes(@RequestBody PrepareRequest request) {
+        this.commandHandler.handle(new PrepareDishes(request.dishIds));
     }
+
+    @PostMapping
+    public void newDish(@RequestBody NewDishRequest request) {
+        this.commandHandler.handle(new NewDish(request.name, request.ingredientIds));
+    }
+
+
 }

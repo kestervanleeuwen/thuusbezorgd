@@ -6,18 +6,18 @@ import java.util.List;
 
 public class NewDish {
     private final String name;
-    private final List<Ingredient> ingredients;
+    private final List<Long> ingredientIds;
 
-    public NewDish(String name, List<Ingredient> ingredients) {
+    public NewDish(String name, List<Long> ingredientIds) {
         this.name = name;
-        this.ingredients = ingredients;
+        this.ingredientIds = ingredientIds;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public List<Long> getIngredientIds() {
+        return ingredientIds;
     }
 }

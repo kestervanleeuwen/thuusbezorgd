@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{user}")
-    public List<Order> getOrdersByUser(@PathVariable Long user) {
+    public List<Order> getOrdersByUser(@PathVariable String user) {
         return this.queryHandler.handle(new GetOrderByUser(user));
     }
 

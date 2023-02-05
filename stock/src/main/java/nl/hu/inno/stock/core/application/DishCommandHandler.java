@@ -3,6 +3,7 @@ package nl.hu.inno.stock.core.application;
 import nl.hu.inno.stock.core.application.command.*;
 import nl.hu.inno.stock.core.domain.Dish;
 import nl.hu.inno.stock.core.domain.Ingredient;
+import nl.hu.inno.stock.core.domain.exception.IngredientNotAvailableException;
 import nl.hu.inno.stock.core.ports.storage.DishRepository;
 import nl.hu.inno.stock.core.ports.storage.IngredientRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,12 @@ public class DishCommandHandler {
     }
 
     public Dish handle(NewDish command) {
-        Dish dish = new Dish(command.getName(), command.getIngredients());
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (Long ingredientId : command.getIngredientIds()) {
+            Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+            ingredients.add(ingredient.get());
+        }
+        Dish dish = new Dish(command.getName(), ingredients);
         return dishRepository.save(dish);
     }
 
@@ -32,7 +38,9 @@ public class DishCommandHandler {
     }
 
     public Ingredient handle(AddIngredientStock command) {
-        Ingredient ingredient = ingredientRepository.findByName(command.getName());
+        Optional<Ingredient> optionalIngredient = ingredientRepository.findById(command.getId());
+        Ingredient ingredient = optionalIngredient.get();
+
         ingredient.deliver(command.getAmount());
         return ingredientRepository.save(ingredient);
     }
@@ -51,7 +59,14 @@ public class DishCommandHandler {
         }
 
         for (Dish dish : dishes) {
+            for(Ingredient ingredient : dish.getIngredients()) {
+                if (ingredient.getNrInStock() < 1) throw new IngredientNotAvailableException(ingredient.getName() + " is not available");
+            }
             dish.prepare();
+
+            for(Ingredient ingredient : dish.getIngredients()) {
+                ingredientRepository.save(ingredient);
+            }
         }
     }
 

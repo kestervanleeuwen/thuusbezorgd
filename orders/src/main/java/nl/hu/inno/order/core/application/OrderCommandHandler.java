@@ -84,6 +84,11 @@ public class OrderCommandHandler {
         return this.orderRepository.save(order);
     }
 
+    public User handle(NewUser command) {
+        User user = new User(command.getName(), command.getPassword());
+        return this.userRepository.save(user);
+    }
+
     public void processOrder(Order order) {
         dishRepository.processDishes(order);
     }

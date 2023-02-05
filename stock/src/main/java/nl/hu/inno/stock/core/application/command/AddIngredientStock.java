@@ -2,16 +2,16 @@ package nl.hu.inno.stock.core.application.command;
 
 public class AddIngredientStock {
 
-    private final String name;
+    private final Long id;
     private final int amount;
 
-    public AddIngredientStock(String name, int amount) {
-        this.name = name;
+    public AddIngredientStock(Long id, int amount) {
+        this.id = id;
         this.amount = amount;
     }
 
-    public String getName() {
-        return name;
+    public Long getId() {
+        return id;
     }
 
     public int getAmount() {

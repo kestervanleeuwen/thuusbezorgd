@@ -1,13 +1,13 @@
 package nl.hu.inno.order.core.application.query;
 
 public class GetOrderByUser {
-    private long userId;
+    private String userId;
 
-    public GetOrderByUser(long userId) {
+    public GetOrderByUser(String userId) {
         this.userId = userId;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 }

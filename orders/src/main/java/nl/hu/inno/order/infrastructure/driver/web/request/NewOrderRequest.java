@@ -6,7 +6,7 @@ import java.util.List;
 
 public class NewOrderRequest {
     @NotBlank
-    public Long userId;
+    public String userId;
     @NotBlank
     public List<Long> dishes;
     @NotBlank

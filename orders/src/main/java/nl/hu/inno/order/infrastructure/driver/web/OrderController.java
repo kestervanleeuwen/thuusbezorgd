@@ -7,7 +7,11 @@ import nl.hu.inno.order.core.application.command.NewOrder;
 import nl.hu.inno.order.core.application.query.GetOrderById;
 import nl.hu.inno.order.core.application.query.GetOrderByUser;
 import nl.hu.inno.order.core.application.query.GetOrders;
-import nl.hu.inno.order.core.domain.Order;
+import nl.hu.inno.order.core.application.query.GetUserById;
+import nl.hu.inno.order.core.domain.*;
+import nl.hu.inno.order.core.ports.storage.ReviewRepository;
+import nl.hu.inno.order.infrastructure.driver.web.request.DeliveryReviewRequest;
+import nl.hu.inno.order.infrastructure.driver.web.request.DishReviewRequest;
 import nl.hu.inno.order.infrastructure.driver.web.request.NewOrderRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +22,12 @@ import java.util.List;
 public class OrderController {
     private final OrderCommandHandler commandHandler;
     private final OrderQueryHandler queryHandler;
+    private final ReviewRepository reviewRepository;
 
-    public OrderController(OrderCommandHandler commandHandler, OrderQueryHandler queryHandler) {
+    public OrderController(OrderCommandHandler commandHandler, OrderQueryHandler queryHandler, ReviewRepository reviewRepository) {
         this.commandHandler = commandHandler;
         this.queryHandler = queryHandler;
+        this.reviewRepository = reviewRepository;
     }
 
     @GetMapping
@@ -55,4 +61,21 @@ public class OrderController {
                 new CheckForOrderStatus(id)
         );
     }
+
+    @PostMapping("/dishreview")
+    public Review dishReview(@RequestBody DishReviewRequest request) {
+        User user = queryHandler.handle(new GetUserById(request.userId));
+        ReviewRating rating = ReviewRating.fromInt(request.rating);
+        DishReview dishReview = new DishReview(request.dishId, rating, user);
+        return this.reviewRepository.save(dishReview);
+    }
+
+    @PostMapping("/deliveryreview")
+    public Review delivery(@RequestBody DeliveryReviewRequest request) {
+        User user = queryHandler.handle(new GetUserById(request.userId));
+        ReviewRating rating = ReviewRating.fromInt(request.rating);
+        DishReview dishReview = new DishReview(request.deliveryId, rating, user);
+        return this.reviewRepository.save(dishReview);
+    }
+
 }

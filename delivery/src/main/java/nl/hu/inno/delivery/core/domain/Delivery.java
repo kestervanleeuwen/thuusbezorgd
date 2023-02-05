@@ -66,4 +66,10 @@ public class Delivery {
     public Long getId() {
         return id;
     }
+    public Long getOrder() {
+        return order;
+    }
+    public Rider getRider() {
+        return rider;
+    }
 }

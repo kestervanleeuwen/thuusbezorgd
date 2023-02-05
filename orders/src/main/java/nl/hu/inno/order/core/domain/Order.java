@@ -103,7 +103,7 @@ public class Order {
     }
 
     public void readyForDelivery() {
-        if (this.status == OrderStatus.ReadyForDelivery) {
+        if (this.status == OrderStatus.ReadyForDelivery && this.delivery == null) {
             this.events.add(new NewOrderEvent(id));
             System.out.println(events);
         } else {

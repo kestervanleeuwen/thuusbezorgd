@@ -61,7 +61,7 @@ public class OrderCommandHandler {
         Order order = orderRepository.findById(command.getOrderId())
                 .orElseThrow(() -> new UserNotFoundException("Order not found"));
 
-        order.setStatus(OrderStatus.Received);
+        order.setStatus(OrderStatus.Underway);
         order.setDelivery(command.getDeliveryId());
         publishEventsAndSave(order);
         return this.orderRepository.save(order);

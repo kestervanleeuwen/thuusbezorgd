@@ -3,6 +3,7 @@ package nl.hu.inno.delivery.infrastructure.driver.web;
 
 import nl.hu.inno.delivery.core.application.DeliveryCommandHandler;
 import nl.hu.inno.delivery.core.application.DeliveryQueryHandler;
+import nl.hu.inno.delivery.core.application.command.FinishDelivery;
 import nl.hu.inno.delivery.core.application.query.GetDeliveries;
 import nl.hu.inno.delivery.core.application.query.GetDeliveryById;
 import nl.hu.inno.delivery.core.domain.Delivery;
@@ -34,6 +35,10 @@ public class DeliveryController {
         return this.queryHandler.handle(new GetDeliveryById(id));
     }
 
+    @PostMapping("/finish/{id}")
+    public void finishDelivery(@PathVariable Long id) {
+        this.commandHandler.handle(new FinishDelivery(id));
+    }
 
 
 

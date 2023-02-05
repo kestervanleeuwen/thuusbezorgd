@@ -25,21 +25,23 @@ public class HttpDishRepository implements DishRepository {
 
     @Override
     public void processDishes(Order order) {
-        List<Long> dishIds = new ArrayList<>();
+        List<Integer> dishIds = new ArrayList<>();
 
         order.getOrderedDishIds().forEach(dishId-> {
-            dishIds.add(dishId);
+            dishIds.add(Math.toIntExact(dishId));
         });
 
         Map<String,Object> requestBody = new HashMap<>();
         requestBody.put("dishIds", dishIds);
 
         Gson gson = new Gson();
-        String json = gson.toJson(dishIds);
+        String json = gson.toJson(requestBody);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(json, headers);
+        System.out.println(request);
+        System.out.println(json);
 
         URI uri = URI.create(this.rootPath + "/dish/prepare");
         this.client.postForObject(uri, request, Void.class);

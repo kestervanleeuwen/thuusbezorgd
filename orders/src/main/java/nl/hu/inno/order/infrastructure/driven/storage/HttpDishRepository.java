@@ -40,8 +40,6 @@ public class HttpDishRepository implements DishRepository {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(json, headers);
-        System.out.println(request);
-        System.out.println(json);
 
         URI uri = URI.create(this.rootPath + "/dish/prepare");
         this.client.postForObject(uri, request, Void.class);

@@ -8,9 +8,6 @@ import nl.hu.inno.order.core.ports.messaging.OrderEventPublisher;
 import nl.hu.inno.order.core.ports.storage.DishRepository;
 import nl.hu.inno.order.core.ports.storage.OrderRepository;
 import nl.hu.inno.order.core.ports.storage.UserRepository;
-import nl.hu.inno.order.infrastructure.driven.messaging.RabbitMqEventPublisher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +38,7 @@ public class OrderCommandHandler {
             order.addDish(dishId);
         }
 
-        publishEventsAndSave(order);
+        publishEvents(order);
         Order savedOrder =  this.orderRepository.save(order);
         processOrder(savedOrder);
         return savedOrder;
@@ -53,7 +50,7 @@ public class OrderCommandHandler {
 
         order.readyForDelivery();
 
-        publishEventsAndSave(order);
+        publishEvents(order);
         return orderRepository.save(order);
     }
 
@@ -63,7 +60,7 @@ public class OrderCommandHandler {
 
         order.setStatus(OrderStatus.Underway);
         order.setDelivery(command.getDeliveryId());
-        publishEventsAndSave(order);
+        publishEvents(order);
         return this.orderRepository.save(order);
     }
 
@@ -72,7 +69,7 @@ public class OrderCommandHandler {
                 .orElseThrow(() -> new UserNotFoundException("Order not found"));
 
         order.setStatus(OrderStatus.Delivered);
-        publishEventsAndSave(order);
+        publishEvents(order);
         return this.orderRepository.save(order);
     }
 
@@ -81,7 +78,7 @@ public class OrderCommandHandler {
                 .orElseThrow(() -> new UserNotFoundException("Order not found"));
 
         order.addDish(command.getDishId());
-        publishEventsAndSave(order);
+        publishEvents(order);
         return this.orderRepository.save(order);
     }
 
@@ -94,7 +91,7 @@ public class OrderCommandHandler {
         dishRepository.processDishes(order);
     }
 
-    private void publishEventsAndSave(Order order) {
+    private void publishEvents(Order order) {
         List<OrderEvent> events = order.listEvents();
         events.forEach(eventPublisher::publish);
         order.clearEvents();

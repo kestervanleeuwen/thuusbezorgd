@@ -38,7 +38,7 @@ public class DeliveryCommandHandler {
 
             Delivery savedDelivery = this.deliveryRepository.save(delivery);
             savedDelivery.orderReceived(savedDelivery.getId());
-            publishEventsAndSave(savedDelivery);
+            publishEvents(savedDelivery);
             return savedDelivery;
         } else {
             throw new RiderNotFoundException("No riders available");
@@ -55,7 +55,7 @@ public class DeliveryCommandHandler {
                 .orElseThrow(() -> new DeliveryNotFoundException("Delivery not found"));
 
         delivery.setOrder(command.getOrderId());
-        publishEventsAndSave(delivery);
+        publishEvents(delivery);
         return this.deliveryRepository.save(delivery);
     }
 
@@ -64,11 +64,11 @@ public class DeliveryCommandHandler {
                 .orElseThrow(() -> new DeliveryNotFoundException("Delivery not found"));
 
         delivery.markCompleted();
-        publishEventsAndSave(delivery);
+        publishEvents(delivery);
         return this.deliveryRepository.save(delivery);
     }
 
-    private void publishEventsAndSave(Delivery delivery) {
+    private void publishEvents(Delivery delivery) {
         List<DeliveryEvent> events = delivery.listEvents();
         events.forEach(eventPublisher::publish);
         delivery.clearEvents();
